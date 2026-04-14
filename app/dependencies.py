@@ -5,15 +5,15 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models import User
 
-# 🔐 SECRET CONFIG (same as auth.py)
+#  SECRET CONFIG (same as auth.py)
 SECRET_KEY = "secret123"
 ALGORITHM = "HS256"
 
-# 🔓 TOKEN SECURITY (Swagger will show token box)
+#  TOKEN SECURITY (Swagger will show token box)
 security = HTTPBearer()
 
 
-# ✅ DATABASE DEPENDENCY
+#  DATABASE DEPENDENCY
 def get_db():
     db = SessionLocal()
     try:
@@ -22,7 +22,7 @@ def get_db():
         db.close()
 
 
-# ✅ GET CURRENT USER FROM TOKEN
+#  GET CURRENT USER FROM TOKEN
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)

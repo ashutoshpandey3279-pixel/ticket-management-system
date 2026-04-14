@@ -6,7 +6,7 @@ from app.auth import hash_password, verify_password, create_token
 
 router = APIRouter()
 
-# ✅ REGISTER
+#  REGISTER
 @router.post("/register")
 def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     existing = db.query(models.User).filter(models.User.email == user.email).first()
@@ -24,7 +24,7 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return {"message": "User created"}
 
 
-# ✅ LOGIN (STEP 5 HERE)
+#  LOGIN (STEP 5 HERE)
 @router.post("/login")
 def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()

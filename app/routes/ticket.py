@@ -5,7 +5,7 @@ from app.dependencies import get_db, get_current_user
 
 router = APIRouter()
 
-# ✅ CREATE TICKET
+#  CREATE TICKET
 @router.post("/tickets")
 def create_ticket(
     ticket: schemas.TicketCreate,
@@ -27,7 +27,7 @@ def create_ticket(
     return new_ticket
 
 
-# ✅ LIST TICKETS WITH FILTERS
+#  LIST TICKETS WITH FILTERS
 @router.get("/tickets")
 def get_tickets(
     status: str = None,
@@ -38,11 +38,11 @@ def get_tickets(
 ):
     query = db.query(models.Ticket)
 
-    # 🔒 USER CAN SEE ONLY THEIR TICKETS
+    #  USER CAN SEE ONLY THEIR TICKETS
     if current_user.role != "admin":
         query = query.filter(models.Ticket.created_by == current_user.id)
 
-    # 🔍 FILTERS
+    #  FILTERS
     if status:
         query = query.filter(models.Ticket.status == status)
 
@@ -55,7 +55,7 @@ def get_tickets(
     return query.all()
 
 
-# ✅ GET TICKET BY ID
+#  GET TICKET BY ID
 @router.get("/tickets/{ticket_id}")
 def get_ticket(
     ticket_id: int,
@@ -67,14 +67,14 @@ def get_ticket(
     if not ticket:
         raise HTTPException(status_code=404, detail="Ticket not found")
 
-    # 🔒 USER ACCESS CONTROL
+    #  USER ACCESS CONTROL
     if current_user.role != "admin" and ticket.created_by != current_user.id:
         raise HTTPException(status_code=403, detail="Not allowed")
 
     return ticket
 
 
-# ✅ UPDATE TICKET
+#  UPDATE TICKET
 @router.put("/tickets/{ticket_id}")
 def update_ticket(
     ticket_id: int,
@@ -99,7 +99,7 @@ def update_ticket(
     return ticket
 
 
-# ✅ UPDATE TICKET STATUS (SEPARATE API)
+#  UPDATE TICKET STATUS (SEPARATE API)
 @router.put("/tickets/{ticket_id}/status")
 def update_status(
     ticket_id: int,
@@ -123,7 +123,7 @@ def update_status(
     return {"message": "Status updated"}
 
 
-# ✅ DELETE TICKET
+#  DELETE TICKET
 @router.delete("/tickets/{ticket_id}")
 def delete_ticket(
     ticket_id: int,
@@ -145,7 +145,7 @@ def delete_ticket(
     return {"message": "Ticket deleted"}
 
 
-# ✅ ADMIN STATS API
+
 @router.get("/admin/stats")
 def admin_stats(
     db: Session = Depends(get_db),
